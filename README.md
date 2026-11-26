@@ -144,7 +144,7 @@ smallest car). After each course the robot does something new, and you can stop 
 thing. Soldering is course 4; the first three need none.
 
 Status, honestly: the car drives. It first drove on 20 November 2026, over its own Wi-Fi from a phone, and
-since 23 November it speaks Czech: a second model, same abilities, `SPEAK=cs ./flash.sh`. Its
+since 23 November it also speaks Czech: a second model, trained its own way, `SPEAK=cs ./flash.sh`. Its
 name is Franta; it does not know that yet. On it: wheels, the head and the arm on servos, the 8×8 face, the buzzers,
 the rangefinder. Not yet: the potentiometer, so for now the inputs are set by typing `@angry 0.6`.
 
