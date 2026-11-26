@@ -31,7 +31,7 @@ Buy by lesson. Lesson 1 is three things.
 | soldering iron, solder, three bits of wire | for the square's `V+ V- IN` pads | 3 |
 | car chassis kit | 4 motors, 4 wheels, two plates, standoffs, screws | 4 |
 | 2× L9110S motor driver | a small red board with two blue screw terminals | 4 |
-| SG90 servo, 10k potentiometer, passive buzzer (three legs, marked S) | the arm, the dial, the voice | 4 |
+| SG90 servos, 10k potentiometer, passive buzzer (three legs, marked S) | the head and the arm, the dial, the voice | 4 |
 | ultrasonic rangefinder | marked RCWL-9610 | 4 |
 | battery holder + two 18650 cells | charged. The car does not run on hope. | 4 |
 | breadboard, cutters, tape, a small cross screwdriver | and a box to stand the car on, wheels in the air | 4 |
@@ -143,11 +143,12 @@ Run: `./flash.sh`, then `python talk.py`. The build is a recipe in six courses (
 smallest car). After each course the robot does something new, and you can stop at any one and have a finished
 thing. Soldering is course 4; the first three need none.
 
-Status, honestly: the car drove on 20 November 2026, over its own Wi-Fi from a phone, with the previous model.
-Model 14 is measured on the host and compiled for the board. Wheels and screen are on; the rest of the body
-arrives course by course.
+Status, honestly: the car drives. It first drove on 20 November 2026, over its own Wi-Fi from a phone, and
+since 23 November it speaks Czech: a second model, same abilities, `SPEAK=cs ./flash.sh`. Its
+name is Franta; it does not know that yet. On it: wheels, the head and the arm on servos, the 8×8 face, the buzzers,
+the rangefinder. Not yet: the potentiometer, so for now the inputs are set by typing `@angry 0.6`.
 
-Try: *drive forward 2 seconds* with the potentiometer at zero, then at one. Compare the two programs, not the eyes.
+Try: *drive forward 2 seconds* with `@angry 0`, then `@angry 1` (or the potentiometer, once it is wired). Compare the two programs, not the eyes.
 
 You can say: a model has a stream of numbers inside. Things that were never words can be added to it. A dial you
 wire in is a door the prompt cannot talk its way through.
