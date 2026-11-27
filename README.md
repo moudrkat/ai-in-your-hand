@@ -2,7 +2,7 @@
 
 A language model with four million parameters, on a chip that fits in your palm. It writes a program and the
 chip runs it. A thermometer sets its temperature. Its attention head glows on 64 LEDs while it thinks. Then it
-gets wheels. Four lessons. After each one you own a finished thing, and you can stop there with a clear conscience.
+gets wheels. Then you train your own. Six lessons. After each one you own a finished thing, and you can stop there with a clear conscience.
 
 No cloud, no server, no laptop in the loop once it is flashed. Every number below was measured. Where something
 was not, it says so.
@@ -13,6 +13,8 @@ was not, it says so.
 | 2 | [Pins in: temperature](#2--pins-in-temperature) | softmax, temperature, entropy, with a thermometer | [maxwell-on-a-chip](https://github.com/moudrkat/maxwell-on-a-chip) | + thermometer |
 | 3 | [Pins out: attention in your hand](#3--pins-out-attention-in-your-hand) | what an attention head is, row by row | [attention-in-your-hand](https://github.com/moudrkat/attention-in-your-hand) | + LED square, soldering iron |
 | 4 | [Wheels](#4--wheels) | inputs that are not words, added into the model's stream | [esp32-robot](https://github.com/moudrkat/esp32-robot) | + a small car's worth of parts |
+| 5 | [Teach Franta a trick](#5--teach-franta-a-trick) | what training is: show, don't tell | [colab.ipynb](colab.ipynb) | nothing |
+| 6 | [A robot of your own](#6--a-robot-of-your-own) | a model from nothing, in any language | [colab.ipynb](colab.ipynb) | nothing new |
 
 Assumes you can plug in a USB cable and run three commands. Soldering first appears in lesson 3, three wires.
 
@@ -153,12 +155,50 @@ Try: *drive forward 2 seconds* with `@angry 0`, then `@angry 1` (or the potentio
 You can say: a model has a stream of numbers inside. Things that were never words can be added to it. A dial you
 wire in is a door the prompt cannot talk its way through.
 
-## After four lessons
+## 5 · Teach Franta a trick
+
+[**Open in Colab**](https://colab.research.google.com/github/moudrkat/ai-in-your-hand/blob/main/colab.ipynb). Free,
+in the browser, with a GPU on loan from Google.
+
+Until now someone else trained every model you flashed. Here you do. A trick is one program and the ways people ask
+for it: *do the robot*, *dance like a robot*, *beep boop dance*, fourteen of them. Franta starts from what he knows
+and practises yours for three and a half minutes on Colab's T4. Then: *"pretend you're a robot and dance"*, a wording
+he never saw, and he dances. He forgets a little on the way: 96.5 % of his old requests before, 94.6 % after.
+
+Run: the notebook, top to bottom. Download the model, then `MODEL=model-teach ./flash.sh`.
+
+Try: ask your trick in words you did not write. Then ask something next to it (*"robot time"*). Where does it stop
+being your trick?
+
+You can say: a model is not told what to do, it is shown. Show it fourteen ways of asking and it guesses the
+fifteenth.
+
+## 6 · A robot of your own
+
+Not a car. A plant that complains, a lamp with opinions. Its parts are Franta's (servo, buzzer, screen, lights,
+thermometer), so the language from lesson 1 is its whole world. You write its tricks, and a model of one million
+parameters learns them from nothing: under a minute on Colab, a few minutes without a GPU.
+
+The example plant speaks Czech, on purpose. The model learns its words from your tricks only, so it speaks whatever
+you write it in. No English underneath. A Czech plant asked *"chtěla bys zalít"*, which it never saw, checks its
+soil. Asked to wash the dishes, it says *"to neumim"*, because you taught it to. Asked to drive, it
+waves: it only knows its tricks. The English plant in the repo gets 13 of 14 new sentences right.
+
+Run: the notebook's second half. Then `MODEL=robots/kytka/model ./flash.sh`; `MODEL=0` gives you Franta back.
+
+Try: give a trick one wording only, and ask it in another. Count how many wordings it takes before it guesses.
+
+You can say: the model has no idea it is a plant. It knows the sentences it was shown and the programs that went
+with them. Everything else is a guess, and "I can't" is a guess you taught it.
+
+## After six lessons
 
 - I know what a language model does, because I watched one with three million parameters do it.
 - I know what temperature and entropy are, because a thermometer set one and a screen showed the other.
 - I know what an attention head is, because I held one.
 - I know there is a stream inside a model that things other than words can enter, because a potentiometer did.
+- I know what training is, because I showed a model fourteen sentences and it understood a fifteenth.
+- I know a model speaks the language of its data, because mine speaks Czech and nobody told it to.
 
 ## Credits and licence
 

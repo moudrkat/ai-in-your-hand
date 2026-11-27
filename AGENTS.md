@@ -1,11 +1,12 @@
 # For agents (Claude Code, Codex, Cursor, Copilot…)
 
-This repo is a four-lesson course: a 4 M-parameter language model on an ESP32-S3 that writes programs, reads
-a thermometer, shows an attention head on LEDs and drives a car. The user wants to learn by doing. Your job:
+This repo is a six-lesson course: a 4 M-parameter language model on an ESP32-S3 that writes programs, reads
+a thermometer, shows an attention head on LEDs and drives a car; in lessons 5 and 6 the user trains models of their own
+(`colab.ipynb`, or `./teach.sh` / `./mine.sh` in esp32-robot on a GPU). The user wants to learn by doing. Your job:
 get the board flashed, read the outputs with them, explain the numbers in their words, and invent nothing.
 Every number in `README.md` is measured; if theirs differ, show both.
 
-## The four repos
+## The repos
 
 | lesson | repo | flash | talk | on the laptop, no board |
 |---|---|---|---|---|
@@ -13,6 +14,8 @@ Every number in `README.md` is measured; if theirs differ, show both.
 | 2 temperature | `moudrkat/maxwell-on-a-chip` | `./flash.sh` | the screen | `python sample.py … --temps 0.1 0.7 1.9`, `host/` C |
 | 3 attention | `moudrkat/attention-in-your-hand` | `./flash.sh` | `python talk.py`, `@tri`, `@head L H` | none yet; the square is the point |
 | 4 wheels | `moudrkat/esp32-robot` | `./flash.sh` | `python talk.py` | `research/robot/` scripts |
+| 5 a trick | `colab.ipynb` or `./teach.sh` | `MODEL=model-teach ./flash.sh` | `python talk.py` | the notebook asks the model |
+| 6 your robot | `colab.ipynb` or `./mine.sh robots/<name>` | `MODEL=robots/<name>/model ./flash.sh` | `python talk.py` | the notebook asks the model |
 
 Clone the repo of the lesson next to this one and run its commands from its root. Each has `THIRD_PARTY.md`
 for what is slvDev's.
