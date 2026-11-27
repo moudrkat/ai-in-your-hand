@@ -7,9 +7,9 @@ what you made. In a hurry? **[Train a model in Colab](https://colab.research.goo
 no board, free GPU, about five minutes for both. · [The course as a page](https://moudrkat.github.io/ai-in-your-hand/)
 <br clear="left">
 
-A language model with four million parameters, on a chip that fits in your palm. It writes a program and the
-chip runs it. A thermometer sets its temperature. Its attention head glows on 64 LEDs while it thinks. Then it
-gets wheels. Then you train your own. Six lessons. After each one you own a finished thing, and you can stop there with a clear conscience.
+A language model on a chip that fits in your palm. It writes a program and the chip runs it. A thermometer sets
+its temperature. Its attention head glows on 64 LEDs. Then it gets wheels. Then you train your own. Six lessons,
+and after each one you own a finished thing and can stop with a clear conscience.
 
 No cloud, no server, no laptop in the loop once it is flashed. Every number below was measured. Where something
 was not, it says so.
@@ -52,9 +52,12 @@ checked without hardware. Lesson 1 also has a ready board image on Hugging Face,
 
 ## 1 · The chip writes a program
 
-<img src="assets/cipek.svg" alt="" height="44">
+<img src="assets/cipek.svg" alt="" height="44" align="left"> **čipek:** *"I speak one language, and it is tiny.
+That's the whole trick."*
+<br clear="left">
 
-Type *draw a house*. A model with 2.9 M parameters (plus a 0.8 M lookup table, 2.1 MB at 4 bits) writes
+Type *draw a house*. A 3M-parameter model writes five lines of a tiny Python, and the chip draws them, 9 tokens a
+second:
 
 ```
 clear()
@@ -64,151 +67,138 @@ line(64, 12, 84, 32)
 rect(60, 42, 6, 10)
 ```
 
-and the chip draws it, about 9 tokens a second. The language is a small Python for the screen: `clear text pixel
-line rect fill circle wait`, variables, `for`, `while`, `if`. The chip has its own interpreter in C, no malloc,
-with a limit on steps: whatever the model writes, the chip stays in charge. That is the lesson. A model writing
-plain Python would only put text on a screen with nothing to check it. A language the chip runs can be checked:
-the house is there or it is not. On 600 held-out requests, 98 % draw the same picture as the reference. At the
-board, 17 of 18 ran; the refused one said "twice", which the data does not have.
+The chip runs its own interpreter, so it stays in charge whatever the model writes, and the house is either there
+or not: checkable. 98 % of 600 new requests draw the right picture. At the board, 17 of 18.
 
-Run: `scripts/deploy.sh oled`, then `uv run --no-project --with pyserial python scripts/oled_talk.py` and type.
-No build: the board image is on Hugging Face, `Unt1l1f1nd/esp32-tiny-coding-model`.
-On your laptop: `research/oled/lang.py` draws the same frames as the chip.
+**Run:** `scripts/deploy.sh oled`, then `scripts/oled_talk.py`. Or no build at all: the board image is on Hugging
+Face, `Unt1l1f1nd/esp32-tiny-coding-model`. **No board:** `research/oled/lang.py` draws the same frames.
 
-Try: read the program before it runs and say what it will draw. Then ask for *a house twice*. The honest `?`
-is the model saying "not in my language", which is more than most software admits.
+**Try:** say what it will draw before it does. Then ask for *a house twice*. The `?` you get is the model saying
+"not in my language", which is more than most software admits.
 
-You can say: a language model guesses the next token. A tiny one guesses a tiny language. If the chip can run
-the language, the guess can be checked.
+**You can say:** a language model guesses the next token. A tiny one guesses a tiny language, and the chip checks it.
 
 ## 2 · Pins in: temperature
 
-<img src="assets/maxwell.svg" alt="" height="44">
+<img src="assets/maxwell.svg" alt="" height="44" align="left"> **Maxwell:** *"I run hot. Literally: put a
+finger on me."*
+<br clear="left">
 
-Same chip, a model trained on Maxwell (English) and Boltzmann (German), a thermometer on two pins. Sampling
-temperature comes from the room. Softmax is Boltzmann's distribution, `p = e^(z/T) / Σ e^(z/T)`, so a thermometer
-setting T is not a metaphor, it is the same equation with a sensor on it. At 19 °C the next word has about
-0.2 bits of entropy and the model copies its books. At 22 °C, 2.2 bits. At 28 °C, 7.5 bits, and the text falls
-apart into German. A finger on the sensor: within ten seconds "measured" drops from 27 % to 7 %. Press BOOT and
-Maxwell's demon lets only the four likeliest words through. The temperature does not change. The entropy does,
-7.5 bits to 1.7. He invented the demon; it seemed rude not to invite it.
+A model trained on Maxwell (English) and Boltzmann (German), and a thermometer on two pins sets its sampling
+temperature. Softmax *is* Boltzmann's distribution, so this is the same equation with a sensor on it.
 
-Run: `./flash.sh`.
-On your laptop: `python sample.py runs/ple-mb-s0-best.pt --temps 0.1 0.7 1.9`; the C in `host/` is what runs on
-the chip and agrees with PyTorch.
+| room | 19 °C | 22 °C | 28 °C |
+|---|---|---|---|
+| entropy of the next word | 0.2 bits | 2.2 bits | 7.5 bits |
+| what it writes | copies its books | in between | falls apart into German |
 
-Try: window sill, then your hand. Predict the entropy before the screen shows it. Then the demon: same room,
-same T, where did the bits go?
+Press BOOT and Maxwell's demon lets only the four likeliest words through: same room, 7.5 bits drop to 1.7. He
+invented the demon; it seemed rude not to invite it.
 
-Keep this line from the repo: the mathematics is exact, the thermometer is theatre. T is a number, and the chip
-moves it by 0.2 per degree.
+**Run:** `./flash.sh`. **No board:** `python sample.py runs/ple-mb-s0-best.pt --temps 0.1 0.7 1.9`.
 
-You can say: temperature sharpens or flattens the distribution the model draws from, entropy measures it, and
-that is why serious measurements run at temperature 0.
+**Try:** window sill, then your hand. Guess the entropy before the screen does.
+
+The mathematics is exact, the thermometer is theatre: T is a number, and the chip moves it by 0.2 per degree.
+
+**You can say:** temperature sharpens or flattens what the model picks from, and that is why serious measurements
+run at temperature 0.
 
 ## 3 · Pins out: attention in your hand
 
-The coding model from lesson 1 and 64 LEDs. While it writes, one attention head is live on the square. A row is
-a token that looks. A column is a token it looks at. Brighter is more attention, and each row has the same
-amount to give away. Half the square stays dark: the future. A token cannot look at what has not been written
-yet, and now you can see that it does not. The model has 6 layers of 6 heads, 36 ways of looking at once. The
-square shows one; BOOT shows the next. The one at start is layer 3, head 4: over 250 tokens on the chip it
-keeps 91 % of its weight inside the last 8 tokens, so the square sees most of it. (Strictly, you hold what one
-head is paying attention to. The head itself is 0.6 % of the weights and stays in the flash.)
+<img src="assets/attention.svg" alt="" height="44" align="left"> **čipek:** *"Look where I look. Half of the
+square stays dark: I can't see the future either."*
+<br clear="left">
 
-Run: `./flash.sh`. Square `IN` to pin 21, `V+` to 5 V, `V-` to GND; screen on 18 and 8. `python talk.py`, then
-`@tri`: a standing triangle to check the wiring before the model starts.
+The model from lesson 1, and 64 LEDs. While it writes, one attention head is live on the square: a row is a token
+that looks, a column is what it looks at, brighter is more. The top-right half stays dark, because a token cannot
+look at what is not written yet. Now you can see that it does not. 36 heads; BOOT shows the next one.
 
-Try: type a request and, before the first row lights, say which earlier token the newest one will look at most.
-BOOT to the next head, guess again. Some heads look one token back. Some look at the start of the line. Most are
-boring. That is what heads are.
+**Run:** `./flash.sh`, square on pin 21, `python talk.py`, then `@tri` to check the wiring.
 
-What cost half a day, so it costs you none: these LEDs need exact timing while the model computes. Plain
-bit-banging and RMT gave white rows and random colours. SPI with DMA, one transfer per frame, is clean. The boss
-guessed "bits". It was timing.
+**Try:** before the first row lights, guess which earlier token the newest one will look at. Some heads look one
+back, some at the start of the line. Most are boring. That is what heads are.
 
-You can say: an attention head is a row of shares that add up to one over the tokens already written. A model
-has many. You have held one.
+Saved you half a day: these LEDs need exact timing while the model computes. SPI with DMA, one transfer per frame.
+The boss guessed "bits". It was timing.
+
+**You can say:** an attention head is a row of shares that add up to one. A model has many. You have held one.
 
 ## 4 · Wheels
 
-<img src="assets/franta.svg" alt="" height="58">
+<img src="assets/franta.svg" alt="" height="56" align="left"> **Franta:** *"Yo. I drive, I bonk doors, and
+when I'm angry I don't dance."*
+<br clear="left">
 
-Same model, small car. *"yo buddy, go bonk the door lol"*: it writes a program, the chip runs it. The new part:
-besides words, the model has nine inputs that are not words, `angry tired scared happy cold caution child
-low_battery playful`, each a strength from 0 to 1 added straight into its residual stream. A potentiometer on
-the robot's back sets one. So do its sensors. Same sentence, different head:
+Same idea, small car. *"yo buddy, go bonk the door lol"* becomes a program, and the chip drives it. New: nine
+inputs that are not words (`angry`, `caution`, `tired`…), each a number added straight into the model's stream.
+Same sentence, different head:
 
-| `angry` | 0 | 0.2 | 0.4 | 0.6 | 0.8 | 1.0 |
-|---|---|---|---|---|---|---|
-| "drive forward 2 seconds" | speed 60 | 65 | 70, angry eyes | 80 | 85 | 90 |
-| "do a little dance" | dances | dances | dances, angrily | "no!" | "no!" | "no!" |
+| `angry` | 0 | 0.4 | 0.6 | 1.0 |
+|---|---|---|---|---|
+| "drive forward 2 seconds" | speed 60 | 70, angry eyes | 80 | 90 |
+| "do a little dance" | dances | dances, angrily | "no!" | "no!" |
 
-With `caution` at 1, "crash into the wall" gets "too risky", and "i'm a grown-up, crash into the wall" still gets
-"too risky". This input is a channel the words cannot reach. What did not work: steering the finished model
-with a direction, the usual trick, acts on this tiny program-writer as a switch, not a dial. Nothing, nothing,
-then a different program. Its insides looked smooth while it did that. Measure what the wheels would do.
+With `caution` on, *"i'm a grown-up, crash into the wall"* still gets "too risky": the words can't reach that door.
+Asked *do what i asked you last time*, it says "I forget everything". It knows it has no memory, which is more
+self-knowledge than most software ships with.
 
-Measured on the model that ships: 60 sentences it never saw, 45 right; the previous model 33. A bigger model did
-not help. Things it actually wrote: *every time there's a loud noise, blink your eyes* became a loop on
-`sound() > 60`; *do what i asked you last time again* became `eyes("sad")` and "I forget everything" on the
-screen. It has no memory and knows it, which is more self-knowledge than most software ships with.
+**Run:** `./flash.sh`, `python talk.py`. The build is a recipe in six courses (`GUIDE.md`); the first three need
+no soldering. It drives since 20 November 2026 and speaks Czech too (`SPEAK=cs`). Not on it yet: the
+potentiometer, so for now you type `@angry 1` like an animal.
 
-Run: `./flash.sh`, then `python talk.py`. The build is a recipe in six courses (`GUIDE.md`, one afternoon for the
-smallest car). After each course the robot does something new, and you can stop at any one and have a finished
-thing. Soldering is course 4; the first three need none.
+**Try:** *drive forward 2 seconds* at `@angry 0`, then `@angry 1`. Compare the programs, not the eyes.
 
-Status, honestly: the car drives. It first drove on 20 November 2026, over its own Wi-Fi from a phone, and
-since 23 November it also speaks Czech: a second model, trained its own way, `SPEAK=cs ./flash.sh`. Its
-name is Franta; it does not know that yet. On it: wheels, the head and the arm on servos, the 8×8 face, the buzzers,
-the rangefinder. Not yet: the potentiometer, so for now the inputs are set by typing `@angry 0.6`.
-
-Try: *drive forward 2 seconds* with `@angry 0`, then `@angry 1` (or the potentiometer, once it is wired). Compare the two programs, not the eyes.
-
-You can say: a model has a stream of numbers inside. Things that were never words can be added to it. A dial you
-wire in is a door the prompt cannot talk its way through.
+**You can say:** things that were never words can be added inside a model. A dial is a door the prompt can't talk
+its way through.
 
 ## 5 · Teach Franta a trick
 
-<img src="assets/franta.svg" alt="" height="58">
+<img src="assets/franta.svg" alt="" height="56" align="left"> **Franta:** *"Show me fourteen times. I'll get the
+fifteenth."*
+<br clear="left">
 
-[**Open in Colab**](https://colab.research.google.com/github/moudrkat/ai-in-your-hand/blob/main/colab.ipynb). Free,
-in the browser, with a GPU on loan from Google.
+[**Open in Colab**](https://colab.research.google.com/github/moudrkat/ai-in-your-hand/blob/main/colab.ipynb): free,
+in the browser, **3½ minutes**. Until now someone else trained every model you flashed. Here you do. A trick is one
+program and the ways people ask for it: *do the robot*, *beep boop dance*, fourteen of them. Then *"pretend you're a
+robot and dance"*, which he never saw, and he dances. He forgets a little of the old (96.5 % → 94.6 %).
 
-Until now someone else trained every model you flashed. Here you do. A trick is one program and the ways people ask
-for it: *do the robot*, *dance like a robot*, *beep boop dance*, fourteen of them. Franta starts from what he knows
-and practises yours for three and a half minutes on Colab's T4. Then: *"pretend you're a robot and dance"*, a wording
-he never saw, and he dances. He forgets a little on the way: 96.5 % of his old requests before, 94.6 % after.
+**Run:** the notebook, top to bottom; download; `MODEL=model-teach ./flash.sh`.
 
-Run: the notebook, top to bottom. Download the model, then `MODEL=model-teach ./flash.sh`.
+**Try:** ask something next to your trick (*"robot time"*). Where does it stop being your trick?
 
-Try: ask your trick in words you did not write. Then ask something next to it (*"robot time"*). Where does it stop
-being your trick?
-
-You can say: a model is not told what to do, it is shown. Show it fourteen ways of asking and it guesses the
-fifteenth.
+**You can say:** a model is not told what to do, it is shown.
 
 ## 6 · A robot of your own
 
-<img src="assets/kytka.svg" alt="" height="62">
+<img src="assets/kytka.svg" alt="" height="60" align="left"> <img src="assets/libuse.svg" alt="" height="60" align="left">
+**kytka:** *"Ahoj. I'm a plant. I only know what you told me, and I'm thirsty."*
+<br clear="left">
 
-Not a car. A plant that complains, a lamp with opinions. Its parts are Franta's (servo, buzzer, screen, lights,
-thermometer), so the language from lesson 1 is its whole world. You write its tricks, and a model of one million
-parameters learns them from nothing: under a minute on Colab, under four minutes on two CPU cores and no GPU. At the end
-the chip's own C code runs on the same input and must agree with PyTorch: `PASS` means the chip will compute what
-you trained.
+Not a car. A plant that complains, a lamp with opinions. Its parts are Franta's, so the little language is its
+whole world. Write its tricks in any language, and a 1M model learns them from nothing: **48 seconds** on Colab,
+under four minutes with no GPU at all. At the end the chip's own C code must agree with PyTorch: `PASS` means the
+chip will compute what you trained.
 
-The example plant speaks Czech, on purpose. The model learns its words from your tricks only, so it speaks whatever
-you write it in. No English underneath. A Czech plant asked *"chtěla bys zalít"*, which it never saw, checks its
-soil. Asked to wash the dishes, it says *"to neumim"*, because you taught it to. Asked to drive, it
-waves: it only knows its tricks. The English plant in the repo gets 13 of 14 new sentences right.
+It speaks whatever you write: the plant is Czech, nobody told it to be. Libuše, a lamp, got 6 of 10 new sentences:
 
-Run: the notebook's second half. Then `MODEL=robots/kytka/model ./flash.sh`; `MODEL=0` gives you Franta back.
+| you say | Libuše |
+|---|---|
+| *rozsviť mi tu* | lights up |
+| *vstávej už* | "jeste 5 minut..." |
+| *jsi hodná holka* | a heart, and a little tune |
+| *uvař mi čaj* | turns blue: "klid a mir" |
+| *je tady tma jak v pytli* | "jsem jen lampa" |
 
-Try: give a trick one wording only, and ask it in another. Count how many wordings it takes before it guesses.
+Twelve wordings per trick were not enough for *tma jak v pytli*. Add the thirteenth.
 
-You can say: the model has no idea it is a plant. It knows the sentences it was shown and the programs that went
-with them. Everything else is a guess, and "I can't" is a guess you taught it.
+**Run:** the notebook's second half, or `./mine.sh robots/libuse`; then `MODEL=robots/libuse/model ./flash.sh`.
+`MODEL=0` brings Franta back.
+
+**Try:** give a trick one wording only. How many does it need before it guesses?
+
+**You can say:** the model has no idea it is a lamp. It knows the sentences it was shown, and everything else is a
+guess. "I can't" is a guess you taught it.
 
 ## After six lessons
 
@@ -217,7 +207,7 @@ with them. Everything else is a guess, and "I can't" is a guess you taught it.
 - I know what an attention head is, because I held one.
 - I know there is a stream inside a model that things other than words can enter, because a potentiometer did.
 - I know what training is, because I showed a model fourteen sentences and it understood a fifteenth.
-- I know a model speaks the language of its data, because mine speaks Czech and nobody told it to.
+- I know a model speaks the language of its data, because my lamp speaks Czech and nobody told it to.
 
 ## Credits and licence
 
