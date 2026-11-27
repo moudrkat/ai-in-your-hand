@@ -14,7 +14,7 @@ img.m{height:min(16vw,28vh)}img.ms{height:min(8vw,14vh)}
 .who{display:flex;align-items:center;gap:1.2em;margin-bottom:.6em}.say{font-style:italic;font-size:min(2.2vw,3.9vh)}
 table{border-collapse:collapse;font-size:min(2vw,3.5vh)}td{padding:.35em .8em;border-top:1px solid #e3ddcc}td:first-child{font-style:italic}
 code{font-size:.9em}
-.src{position:absolute;left:6%;bottom:3%;margin:0;font-size:min(1.1vw,1.9vh);color:var(--dim)}.src a{color:var(--dim)}.cap{font-size:min(1.4vw,2.5vh);margin:.4em 0 0;color:var(--dim)}td.t{color:var(--teal);font-weight:700;font-style:normal}
+.src{position:absolute;left:6%;bottom:3%;margin:0;font-size:min(1.1vw,1.9vh);color:var(--dim)}.src a{color:var(--dim)}.cap{font-size:min(1.4vw,2.5vh);margin:.4em 0 0;color:var(--dim)}table.sm{font-size:min(1.55vw,2.75vh)}td.t{color:var(--teal);font-weight:700;font-style:normal}
 .hint{position:fixed;left:50%;bottom:6px;transform:translateX(-50%);font-size:12px;color:var(--dim)}
 @media print{html,body{overflow:visible;background:#fff}.s{display:flex!important;position:relative;width:100vw;height:56.25vw;page-break-after:always}.hint{display:none}@page{size:1600px 900px;margin:0}}
 </style></head><body>
@@ -67,6 +67,28 @@ code{font-size:.9em}
 <p class="big">ST, in a preprint by its engineer: to fit its own NPU, a language model had to <b>drop softmax attention</b>.</p>
 <p class="big dim">The hobbyists got there first.</p>
 <p class="src">Espressif ESP-Techpedia; Arm Newsroom, Nov 2024; arXiv 2611.28935 (preprint) · <a href="https://newsroom.arm.com/blog/small-language-model-generative-ai-edge">newsroom.arm.com</a></p></section>
+
+<section class="s"><h2>What they actually write</h2>
+<table class="sm">
+<tr><td>stories</td><td>"Once upon a time, there was a little hanger. The hanger was sad…"</td><td class="dim">chip</td></tr>
+<tr><td>stories, 260 K</td><td>"He put the bug on the bug and started to bug."</td><td class="dim">chip</td></tr>
+<tr><td>chat</td><td>"The largest planet is Earth…"</td><td class="dim">chip</td></tr>
+<tr><td>a narrow helper</td><td>"if the cup reads bitter, coarsen a step."</td><td class="dim">chip</td></tr>
+<tr><td>sentence → pin</td><td>blink pin 4 every 5 seconds 3 times → <b>blinking 1 pin every 5000ms, 3 times</b></td><td class="dim">chip</td></tr>
+<tr><td>sentence → robot</td><td>LEDライトの色を青にして → <b>LED を青にする</b></td><td class="dim">chip</td></tr>
+</table>
+<p class="big">Stories: a demo. Chat: one fact right, the next wrong. <b>Narrow tasks: actually useful.</b></p>
+<p class="src">JARACH-209, jake-g, ViezeVingertjes, slvDev Barista, esp32-gpio-llm, ayousanz · GitHub and Hugging Face · <a href="https://huggingface.co/slvDev/esp32-ai-barista">huggingface.co</a></p></section>
+
+<section class="s"><h2>What's different here</h2>
+<table class="sm">
+<tr><td>elsewhere</td><td>here</td></tr>
+<tr><td>one command, rule or JSON</td><td><b>a program</b> with loops and <code>if</code>; the chip runs it and checks the picture</td></tr>
+<tr><td>only the output</td><td><b>the inside:</b> a thermometer sets T, attention on LEDs, a dial into the stream</td></tr>
+<tr><td>the author's own numbers</td><td>a test set <b>someone else wrote</b>, chip = PyTorch, what failed published too</td></tr>
+<tr><td>a model to download</td><td><b>your own robot</b>, any language, 48 s on Colab</td></tr>
+</table>
+<p class="big dim">Not first: sentence → pin (esp32-gpio-llm, llmOS) and sentence → robot action (ayousanz) came earlier. Not the biggest either.</p></section>
 
 <section class="s"><h2>What grew from it</h2>
 <div class="row" style="align-items:flex-start;gap:2.5%">
