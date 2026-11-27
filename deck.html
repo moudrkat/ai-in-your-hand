@@ -14,43 +14,67 @@ img.m{height:min(16vw,28vh)}img.ms{height:min(8vw,14vh)}
 .who{display:flex;align-items:center;gap:1.2em;margin-bottom:.6em}.say{font-style:italic;font-size:min(2.2vw,3.9vh)}
 table{border-collapse:collapse;font-size:min(2vw,3.5vh)}td{padding:.35em .8em;border-top:1px solid #e3ddcc}td:first-child{font-style:italic}
 code{font-size:.9em}
+.src{position:absolute;left:6%;bottom:3%;margin:0;font-size:min(1.1vw,1.9vh);color:var(--dim)}.src a{color:var(--dim)}.cap{font-size:min(1.4vw,2.5vh);margin:.4em 0 0;color:var(--dim)}td.t{color:var(--teal);font-weight:700;font-style:normal}
 .hint{position:fixed;left:50%;bottom:6px;transform:translateX(-50%);font-size:12px;color:var(--dim)}
 @media print{html,body{overflow:visible;background:#fff}.s{display:flex!important;position:relative;width:100vw;height:56.25vw;page-break-after:always}.hint{display:none}@page{size:1600px 900px;margin:0}}
 </style></head><body>
 
 <section class="s"><div class="row"><img class="m" src="assets/cipek.svg" alt="">
-<div><h1>AI in your hand</h1><p class="big">A language model on a chip that fits in your palm.</p><p class="big dim">Six lessons. Each one quick.</p></div></div></section>
+<div><h1>AI in your hand</h1><p class="big">Language models on a chip that fits in your palm.</p><p class="big dim">Who got them there, what grew from it, and a course to see inside.</p></div></div></section>
 
-<section class="s"><div class="who"><img class="ms" src="assets/cipek.svg" alt=""><h2>1 · The chip writes a program</h2></div>
-<img class="ph" src="assets/photos/house.jpg" alt="The chip writes a program for a house, then draws it">
-<p class="big">A tiny model writes a tiny language. <b>The chip checks it.</b> <span class="t">98 %</span></p></section>
+<section class="s"><h2>The chip</h2>
+<p class="big">ESP32-S3. About <b>$10</b>.</p>
+<table><tr><td>SRAM</td><td><b>512 KB</b></td><td class="dim">fast, tiny</td></tr><tr><td>PSRAM</td><td>8 MB</td><td class="dim">medium</td></tr><tr><td>flash</td><td>16 MB</td><td class="dim">huge, slow</td></tr></table>
+<p class="big dim">Half a megabyte to think in.</p>
+<p class="src">slvDev/esp32-ai README · <a href="https://github.com/slvDev/esp32-ai">github.com</a></p></section>
 
-<section class="s"><div class="who"><img class="ms" src="assets/maxwell.svg" alt=""><h2>2 · Pins in: temperature</h2></div>
-<img class="ph" src="assets/photos/maxwell.png" alt="Maxwell and Boltzmann on a chip: 19, 22 and 28 degrees, 0.2, 2.2 and 7.5 bits">
-<p class="big">The room sets T. <b>Softmax is Boltzmann.</b></p></section>
+<section class="s"><h2>Before: TinyML</h2>
+<p class="big">The chip <b>listens for one word</b>, or spots a person.</p>
+<p class="big">It classifies. <b>It does not write.</b></p>
+<p class="big dim">TensorFlow Lite Micro on the ESP32, 2020: person detection, micro speech.</p>
+<p class="src">TensorFlow blog, Aug 2020 · <a href="https://blog.tensorflow.org/2020/08/announcing-tensorflow-lite-micro-esp32.html">blog.tensorflow.org</a></p></section>
 
-<section class="s"><div class="who"><img class="ms" src="assets/attention.svg" alt=""><h2>3 · Attention in your hand</h2></div>
-<img class="ph" src="assets/photos/attention.jpg" alt="One attention head on 64 LEDs, half of the square dark">
-<p class="big">Half stays dark. <b>No peeking at the future.</b></p></section>
+<section class="s"><h2>Then: it writes</h2>
+<table>
+<tr><td>Dave Bennett, llama2.c</td><td><b>260 K</b> parameters</td><td>19 tok/s</td></tr>
+<tr><td>NanoMind-S3</td><td><b>15.2 M</b></td><td>3 tok/s</td></tr>
+<tr><td>slvDev, Aug 2026</td><td><b>28.9 M</b></td><td class="t">9.88 tok/s</td></tr>
+</table>
+<p class="big">Tiny stories, word by word, <b>no cloud</b>. All of it standing on Karpathy's llama2.c.</p>
+<p class="src">hackster.io, the projects' own READMEs · <a href="https://www.hackster.io/news/running-a-28-9m-parameter-llm-on-an-8-microcontroller-173f1f370708">www.hackster.io</a></p></section>
 
-<section class="s"><div class="who"><img class="ms" src="assets/franta.svg" alt=""><h2>4 · Wheels</h2></div>
-<div class="row"><div style="flex:1.3"><img class="ph" src="assets/photos/franta-pins.svg" alt="Franta, labelled with its pins"></div>
-<div style="flex:1"><table><tr><td>angry 0</td><td>dances</td></tr><tr><td>angry 0.4</td><td>dances, angrily</td></tr><tr><td>angry 0.6</td><td><b>"no!"</b></td></tr></table>
-<p class="big">A dial is a door <b>the prompt can't talk through.</b></p></div></div></section>
+<section class="s"><h2>slvDev's trick: the model stays in flash</h2>
+<table>
+<tr><td>SRAM</td><td>activations</td><td class="dim">many times a token</td></tr>
+<tr><td>PSRAM</td><td>the rest, ~4 M</td><td class="dim">once a token</td></tr>
+<tr><td>flash</td><td>a 25 M lookup table</td><td class="dim"><b>~450 bytes</b> a token</td></tr>
+</table>
+<p class="big">Per-Layer Embeddings, from Google's Gemma 3n. <b>Most of the model is never loaded.</b></p>
+<p class="big dim">Same chip, bonus: 48,311 neurons of a real fruit fly brain, escaping a spider.</p>
+<p class="src">slvDev/esp32-ai · <a href="https://github.com/slvDev/esp32-ai">github.com</a></p></section>
 
-<section class="s"><div class="who"><img class="ms" src="assets/franta.svg" alt=""><h2>5 · Teach Franta a trick</h2></div>
-<p class="say">"Show me fourteen times. I'll get the fifteenth."</p>
-<p class="big"><i>do the robot · beep boop dance · …</i> ×14</p>
-<p class="big">→ <i>"pretend you're a robot and dance"</i> → <b>dances</b></p>
-<p class="big"><span class="t">3½ min</span> on Colab</p></section>
+<section class="s"><h2>What grew from it</h2>
+<div class="row" style="align-items:flex-start;gap:2.5%">
+<div style="flex:1"><img class="ph" src="assets/photos/house.jpg" alt=""><p class="cap"><b>it writes programs</b>, the chip checks them</p></div>
+<div style="flex:1"><img class="ph" src="assets/photos/maxwell.png" alt=""><p class="cap"><b>the room</b> sets its temperature</p></div>
+<div style="flex:1"><img class="ph" src="assets/photos/attention.jpg" alt=""><p class="cap"><b>attention</b> on 64 LEDs</p></div>
+<div style="flex:1"><img class="ph" src="assets/photos/franta-pins.svg" alt=""><p class="cap"><b>Franta</b>, a car with a dial into its head</p></div>
+</div>
+<p class="big">A story-teller can't be checked. <b>A program can.</b></p>
+<p class="src">moudrkat, 2026 · <a href="https://github.com/moudrkat">github.com</a></p></section>
 
-<section class="s"><div class="who"><img class="ms" src="assets/libuse.svg" alt=""><h2>6 · A robot of your own</h2></div>
-<p class="say">Libuše, a lamp with opinions. Czech, because the data is.</p>
-<table><tr><td>rozsviť mi tu</td><td>lights up</td></tr><tr><td>vstávej už</td><td>"jeste 5 minut..."</td></tr><tr><td>uvař mi čaj</td><td>"klid a mir"</td></tr><tr><td>je tady tma jak v pytli</td><td>"jsem jen lampa"</td></tr></table>
-<p class="big"><span class="t">48 s</span> on Colab · <b>PASS</b> = the chip agrees</p></section>
+<section class="s"><div class="who"><img class="ms" src="assets/cipek.svg" alt=""><h2>This course: not how big. What happens inside.</h2></div>
+<table>
+<tr><td>1 · a program</td><td>what a tiny model does</td><td class="t">one command</td></tr>
+<tr><td>2 · temperature</td><td>softmax, entropy, a thermometer</td><td class="t">one command</td></tr>
+<tr><td>3 · attention</td><td>one head, in your hand</td><td class="t">3 solder joints</td></tr>
+<tr><td>4 · wheels</td><td>inputs that are not words</td><td class="t">an afternoon</td></tr>
+<tr><td>5 · a trick</td><td>what training is</td><td class="t">3½ min</td></tr>
+<tr><td>6 · your robot</td><td>a model in any language</td><td class="t">48 s</td></tr>
+</table></section>
 
-<section class="s"><div class="row"><img class="m" src="assets/kytka.svg" alt="">
-<div><h1>Your turn</h1><p class="big">moudrkat.github.io/ai-in-your-hand</p><p class="big dim">Colab, free GPU, about five minutes. No board needed to start.</p></div></div></section>
+<section class="s"><div class="row"><img class="m" src="assets/kytka.svg" alt=""><img class="m" src="assets/libuse.svg" alt="" style="margin-left:-2%">
+<div><h1>Your turn</h1><p class="big">moudrkat.github.io/ai-in-your-hand</p><p class="big dim">Start in Colab: free GPU, about five minutes, no board.</p></div></div></section>
 
 <div class="hint">← → · swipe · ?print for PDF</div>
 <script>
