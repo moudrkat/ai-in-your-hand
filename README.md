@@ -177,7 +177,9 @@ fifteenth.
 
 Not a car. A plant that complains, a lamp with opinions. Its parts are Franta's (servo, buzzer, screen, lights,
 thermometer), so the language from lesson 1 is its whole world. You write its tricks, and a model of one million
-parameters learns them from nothing: under a minute on Colab, a few minutes without a GPU.
+parameters learns them from nothing: under a minute on Colab, under four minutes on two CPU cores and no GPU. At the end
+the chip's own C code runs on the same input and must agree with PyTorch:  means the chip will compute what
+you trained.
 
 The example plant speaks Czech, on purpose. The model learns its words from your tricks only, so it speaks whatever
 you write it in. No English underneath. A Czech plant asked *"chtěla bys zalít"*, which it never saw, checks its
