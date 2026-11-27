@@ -1,5 +1,12 @@
 # AI in your hand
 
+<img src="assets/cipek.svg" alt="čipek" height="80" align="left">
+
+**Hi, I'm čipek.** Three million numbers, and I fit in your palm. Every lesson is quick, and after each one you keep
+what you made. In a hurry? **[Train a model in Colab](https://colab.research.google.com/github/moudrkat/ai-in-your-hand/blob/main/colab.ipynb)**:
+no board, free GPU, about five minutes for both. · [The course as a page](https://moudrkat.github.io/ai-in-your-hand/)
+<br clear="left">
+
 A language model with four million parameters, on a chip that fits in your palm. It writes a program and the
 chip runs it. A thermometer sets its temperature. Its attention head glows on 64 LEDs while it thinks. Then it
 gets wheels. Then you train your own. Six lessons. After each one you own a finished thing, and you can stop there with a clear conscience.
@@ -7,14 +14,14 @@ gets wheels. Then you train your own. Six lessons. After each one you own a fini
 No cloud, no server, no laptop in the loop once it is flashed. Every number below was measured. Where something
 was not, it says so.
 
-| | lesson | you learn | repo | buy for it |
-|---|---|---|---|---|
-| 1 | [The chip writes a program](#1--the-chip-writes-a-program) | what a tiny model does, and why a checkable language beats a clever one | [esp32-ai](https://github.com/moudrkat/esp32-ai) | board, screen, cable |
-| 2 | [Pins in: temperature](#2--pins-in-temperature) | softmax, temperature, entropy, with a thermometer | [maxwell-on-a-chip](https://github.com/moudrkat/maxwell-on-a-chip) | + thermometer |
-| 3 | [Pins out: attention in your hand](#3--pins-out-attention-in-your-hand) | what an attention head is, row by row | [attention-in-your-hand](https://github.com/moudrkat/attention-in-your-hand) | + LED square, soldering iron |
-| 4 | [Wheels](#4--wheels) | inputs that are not words, added into the model's stream | [esp32-robot](https://github.com/moudrkat/esp32-robot) | + a small car's worth of parts |
-| 5 | [Teach Franta a trick](#5--teach-franta-a-trick) | what training is: show, don't tell | [colab.ipynb](colab.ipynb) | nothing |
-| 6 | [A robot of your own](#6--a-robot-of-your-own) | a model from nothing, in any language | [colab.ipynb](colab.ipynb) | nothing new |
+| | lesson | you learn | repo | buy for it | takes |
+|---|---|---|---|---|---|
+| 1 | [The chip writes a program](#1--the-chip-writes-a-program) | what a tiny model does, and why a checkable language beats a clever one | [esp32-ai](https://github.com/moudrkat/esp32-ai) | board, screen, cable | one command |
+| 2 | [Pins in: temperature](#2--pins-in-temperature) | softmax, temperature, entropy, with a thermometer | [maxwell-on-a-chip](https://github.com/moudrkat/maxwell-on-a-chip) | + thermometer | one command |
+| 3 | [Pins out: attention in your hand](#3--pins-out-attention-in-your-hand) | what an attention head is, row by row | [attention-in-your-hand](https://github.com/moudrkat/attention-in-your-hand) | + LED square, soldering iron | three solder joints |
+| 4 | [Wheels](#4--wheels) | inputs that are not words, added into the model's stream | [esp32-robot](https://github.com/moudrkat/esp32-robot) | + a small car's worth of parts | an afternoon |
+| 5 | [Teach Franta a trick](#5--teach-franta-a-trick) | what training is: show, don't tell | [colab.ipynb](colab.ipynb) | nothing | 3½ min on Colab |
+| 6 | [A robot of your own](#6--a-robot-of-your-own) | a model from nothing, in any language | [colab.ipynb](colab.ipynb) | nothing new | 48 s on Colab |
 
 Assumes you can plug in a USB cable and run three commands. Soldering first appears in lesson 3, three wires.
 
@@ -45,6 +52,8 @@ checked without hardware. Lesson 1 also has a ready board image on Hugging Face,
 
 ## 1 · The chip writes a program
 
+<img src="assets/cipek.svg" alt="" height="44">
+
 Type *draw a house*. A model with 2.9 M parameters (plus a 0.8 M lookup table, 2.1 MB at 4 bits) writes
 
 ```
@@ -73,6 +82,8 @@ You can say: a language model guesses the next token. A tiny one guesses a tiny 
 the language, the guess can be checked.
 
 ## 2 · Pins in: temperature
+
+<img src="assets/maxwell.svg" alt="" height="44">
 
 Same chip, a model trained on Maxwell (English) and Boltzmann (German), a thermometer on two pins. Sampling
 temperature comes from the room. Softmax is Boltzmann's distribution, `p = e^(z/T) / Σ e^(z/T)`, so a thermometer
@@ -121,6 +132,8 @@ has many. You have held one.
 
 ## 4 · Wheels
 
+<img src="assets/franta.svg" alt="" height="58">
+
 Same model, small car. *"yo buddy, go bonk the door lol"*: it writes a program, the chip runs it. The new part:
 besides words, the model has nine inputs that are not words, `angry tired scared happy cold caution child
 low_battery playful`, each a strength from 0 to 1 added straight into its residual stream. A potentiometer on
@@ -157,6 +170,8 @@ wire in is a door the prompt cannot talk its way through.
 
 ## 5 · Teach Franta a trick
 
+<img src="assets/franta.svg" alt="" height="58">
+
 [**Open in Colab**](https://colab.research.google.com/github/moudrkat/ai-in-your-hand/blob/main/colab.ipynb). Free,
 in the browser, with a GPU on loan from Google.
 
@@ -174,6 +189,8 @@ You can say: a model is not told what to do, it is shown. Show it fourteen ways 
 fifteenth.
 
 ## 6 · A robot of your own
+
+<img src="assets/kytka.svg" alt="" height="62">
 
 Not a car. A plant that complains, a lamp with opinions. Its parts are Franta's (servo, buzzer, screen, lights,
 thermometer), so the language from lesson 1 is its whole world. You write its tricks, and a model of one million
