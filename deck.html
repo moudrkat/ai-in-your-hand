@@ -36,22 +36,37 @@ code{font-size:.9em}
 
 <section class="s"><h2>Then: it writes</h2>
 <table>
-<tr><td>Dave Bennett, llama2.c</td><td><b>260 K</b> parameters</td><td>19 tok/s</td></tr>
-<tr><td>NanoMind-S3</td><td><b>15.2 M</b></td><td>3 tok/s</td></tr>
-<tr><td>slvDev, Aug 2026</td><td><b>28.9 M</b></td><td class="t">9.88 tok/s</td></tr>
+<tr><td>2023 · llama4micro, Cortex-M7</td><td>Karpathy's llama2.c on a microcontroller</td><td></td></tr>
+<tr><td>2024 · DaveBben, ESP32-S3</td><td><b>260 K</b> parameters</td><td>19 tok/s</td></tr>
+<tr><td>2026 · EmbedLlama, STM32H7</td><td>260 K</td><td>87 tok/s</td></tr>
+<tr><td>2026 · slvDev, ESP32-S3</td><td><b>28.9 M</b></td><td class="t">9.88 tok/s</td></tr>
 </table>
-<p class="big">Tiny stories, word by word, <b>no cloud</b>. All of it standing on Karpathy's llama2.c.</p>
-<p class="src">hackster.io, the projects' own READMEs · <a href="https://www.hackster.io/news/running-a-28-9m-parameter-llm-on-an-8-microcontroller-173f1f370708">www.hackster.io</a></p></section>
+<p class="big">Tiny stories, word by word, <b>no cloud</b>. About thirty such projects by now, nearly all hobbyists.</p>
+<p class="big dim">Almost every number is the author's own. Re-measured by someone else: two projects.</p>
+<p class="src">the projects' GitHub READMEs; re-measurements by jake-g and manjunathshiva · <a href="https://github.com/DaveBben/esp32-llm">github.com</a></p></section>
 
 <section class="s"><h2>slvDev's trick: the model stays in flash</h2>
 <table>
+<tr><td>flash</td><td>a 25 M lookup table, <b>87 %</b> of the model</td><td class="dim"><b>~450 bytes</b> read a token</td></tr>
+<tr><td>PSRAM</td><td>the core that actually multiplies: <b>556 K</b></td><td class="dim">once a token</td></tr>
 <tr><td>SRAM</td><td>activations</td><td class="dim">many times a token</td></tr>
-<tr><td>PSRAM</td><td>the rest, ~4 M</td><td class="dim">once a token</td></tr>
-<tr><td>flash</td><td>a 25 M lookup table</td><td class="dim"><b>~450 bytes</b> a token</td></tr>
 </table>
-<p class="big">Per-Layer Embeddings, from Google's Gemma 3n. <b>Most of the model is never loaded.</b></p>
+<p class="big">Per-Layer Embeddings, from Google's Gemma 3n. July 2026, Hacker News front page.</p>
 <p class="big dim">Same chip, bonus: 48,311 neurons of a real fruit fly brain, escaping a spider.</p>
-<p class="src">slvDev/esp32-ai · <a href="https://github.com/slvDev/esp32-ai">github.com</a></p></section>
+<p class="src">slvDev/esp32-ai README and model card · <a href="https://huggingface.co/slvDev/esp32-ai-tinystories">huggingface.co</a></p></section>
+
+<section class="s"><h2>The wall is bandwidth, not compute</h2>
+<table><tr><td>SRAM</td><td class="t">3,800 MB/s</td></tr><tr><td>PSRAM</td><td>89 MB/s</td></tr><tr><td>flash</td><td>32 MB/s</td></tr></table>
+<p class="big">Measured on an ESP32-S3. A model is as fast as <b>the memory it has to read</b>.</p>
+<p class="big dim">Read every weight of a dense 30.7 M model each token: 0.95 tok/s.</p>
+<p class="src">Oído, arXiv 2610.13447 (preprint); JARACH-209/esp32-30.7M · <a href="https://arxiv.org/html/2610.13447">arxiv.org</a></p></section>
+
+<section class="s"><h2>And the chip makers?</h2>
+<p class="big">Espressif: LLMs <b>"still rely on cloud servers"</b>.</p>
+<p class="big">Arm: 15 M at 7.5–8 tok/s on its NPU, <b>on an FPGA</b>.</p>
+<p class="big">ST, in a preprint by its engineer: to fit its own NPU, a language model had to <b>drop softmax attention</b>.</p>
+<p class="big dim">The hobbyists got there first.</p>
+<p class="src">Espressif ESP-Techpedia; Arm Newsroom, Nov 2024; arXiv 2611.28935 (preprint) · <a href="https://newsroom.arm.com/blog/small-language-model-generative-ai-edge">newsroom.arm.com</a></p></section>
 
 <section class="s"><h2>What grew from it</h2>
 <div class="row" style="align-items:flex-start;gap:2.5%">
