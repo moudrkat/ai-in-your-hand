@@ -4,7 +4,7 @@
 
 **Hi, I'm čipek.** Three million numbers, and I fit in your palm. Every lesson is quick, and after each one you keep
 what you made. In a hurry? **[Train a model in Colab](https://colab.research.google.com/github/moudrkat/ai-in-your-hand/blob/main/colab.ipynb)**:
-no board, free GPU, about five minutes for both. · [The course as a page](https://moudrkat.github.io/ai-in-your-hand/)
+no board, free GPU, about five minutes for both. · [The course as a page](https://moudrkat.github.io/ai-in-your-hand/) · [Slides](https://moudrkat.github.io/ai-in-your-hand/deck.html)
 <br clear="left">
 
 A language model on a chip that fits in your palm. It writes a program and the chip runs it. A thermometer sets
@@ -70,6 +70,8 @@ rect(60, 42, 6, 10)
 The chip runs its own interpreter, so it stays in charge whatever the model writes, and the house is either there
 or not: checkable. 98 % of 600 new requests draw the right picture. At the board, 17 of 18.
 
+<img src="assets/photos/house.jpg" alt="the program, then the house" width="560">
+
 **Run:** `scripts/deploy.sh oled`, then `scripts/oled_talk.py`. Or no build at all: the board image is on Hugging
 Face, `Unt1l1f1nd/esp32-tiny-coding-model`. **No board:** `research/oled/lang.py` draws the same frames.
 
@@ -95,6 +97,8 @@ temperature. Softmax *is* Boltzmann's distribution, so this is the same equation
 Press BOOT and Maxwell's demon lets only the four likeliest words through: same room, 7.5 bits drop to 1.7. He
 invented the demon; it seemed rude not to invite it.
 
+<img src="assets/photos/maxwell.png" alt="19, 22 and 28 °C" width="560">
+
 **Run:** `./flash.sh`. **No board:** `python sample.py runs/ple-mb-s0-best.pt --temps 0.1 0.7 1.9`.
 
 **Try:** window sill, then your hand. Guess the entropy before the screen does.
@@ -113,6 +117,8 @@ square stays dark: I can't see the future either."*
 The model from lesson 1, and 64 LEDs. While it writes, one attention head is live on the square: a row is a token
 that looks, a column is what it looks at, brighter is more. The top-right half stays dark, because a token cannot
 look at what is not written yet. Now you can see that it does not. 36 heads; BOOT shows the next one.
+
+<img src="assets/photos/attention.jpg" alt="one attention head on 64 LEDs" width="560">
 
 **Run:** `./flash.sh`, square on pin 21, `python talk.py`, then `@tri` to check the wiring.
 
@@ -142,6 +148,8 @@ Same sentence, different head:
 With `caution` on, *"i'm a grown-up, crash into the wall"* still gets "too risky": the words can't reach that door.
 Asked *do what i asked you last time*, it says "I forget everything". It knows it has no memory, which is more
 self-knowledge than most software ships with.
+
+<img src="assets/photos/franta-pins.svg" alt="Franta, every pin labelled" width="560">
 
 **Run:** `./flash.sh`, `python talk.py`. The build is a recipe in six courses (`GUIDE.md`); the first three need
 no soldering. It drives since 20 November 2026 and speaks Czech too (`SPEAK=cs`). Not on it yet: the
